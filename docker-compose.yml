@@ -1,0 +1,55 @@
+version: '3'
+
+name: aura-lab
+
+networks:
+  aura_comms:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.250.0.0/20
+          # gateway: 10.250.7.1
+
+services:
+  receiver-1:
+    container_name: aura-lab-receiver-1
+    build:
+      context: ./containers/receive
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      # Expose 22 for ansible
+      - 22220:22
+      # Expose 8162 as a safe / standard UDP port
+      - 8162:8162/udp
+    networks:
+      aura_comms:
+        ipv4_address: 10.250.5.2
+  receiver-2:
+    container_name: aura-lab-receiver-2
+    build:
+      context: ./containers/receive
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      # Expose 22 for ansible
+      - 22221:22
+      # Expose 8162 as a safe / standard UDP port
+      - 8163:8162/udp
+    networks:
+      aura_comms:
+        ipv4_address: 10.250.6.2
+  transmit:
+    container_name: aura-lab-transmit
+    build:
+      context: ./containers/transmit
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      # Expose 22 for ansible
+      - 22222:22
+      # Expose 8162 as a safe / standard UDP port
+      - 8164:8162/udp
+    networks:
+      aura_comms:
+        ipv4_address: 10.250.7.2
