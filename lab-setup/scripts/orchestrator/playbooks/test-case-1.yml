@@ -16,9 +16,18 @@
 ---
 - name: Test Playbook
   hosts: all
+  collections:
+    - 'aura.test'
   tasks:
-    - name: My message
-      debug: msg="Myhost is {{ ansible_ssh_host }}"
-
-    - name: My inventory host
-      debug: msg="My inventory host is {{ inventory_hostname }}"
+    - name: Start Receivers
+      include_role:
+        name: 'foo_receive'
+        tasks_from: start.yml
+      when: "'recv' in inventory_hostname"
+      vars:
+        log_dir: '/tmp'
+    - name: Start Transmit
+      include_role:
+        name: 'foo_transmit'
+        tasks_from: start.yml
+      when: "'trmt' in inventory_hostname"

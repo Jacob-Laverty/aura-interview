@@ -1,4 +1,3 @@
-# Multicast sender
 # Guidance:  https://stackoverflow.com/a/1794373
 import socket
 
@@ -16,5 +15,3 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, MULTICAST_TTL)
 
 sock.sendto(MESSAGE, (MCAST_GRP, MCAST_PORT))
-
-print("Hello world!")

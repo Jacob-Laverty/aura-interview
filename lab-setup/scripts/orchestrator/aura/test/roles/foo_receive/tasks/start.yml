@@ -16,11 +16,12 @@
 - ansible.builtin.debug:
     msg: '"Starting foo-receive service with logs in {{ log_dir }}"'
 
-- name: Clear Logs
-  ansible.builtin.file:
-    path: "{{ log_dir }}"
-    state: absent
+# - name: Clear Logs
+#   ansible.builtin.file:
+#     path: '{{ log_dir }}'
+#     state: absent
 
 - name: Start Service
-  ansible.builtin.command:
-    cmd: service foo-receive start
+  ansible.builtin.service:
+    name: foo-receive
+    state: started

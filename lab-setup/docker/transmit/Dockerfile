@@ -22,13 +22,13 @@ RUN chmod +x /usr/local/bin/transmit.py
 # Create the init script for the service
 RUN echo "#!/bin/sh\n\
 ### BEGIN INIT INFO\n\
-# Provides:          aura_comms_transmit\n\
+# Provides:          foo-transmit\n\
 # Required-Start:    \$remote_fs \$syslog\n\
 # Required-Stop:     \$remote_fs \$syslog\n\
 # Default-Start:     2 3 4 5\n\
 # Default-Stop:      0 1 6\n\
-# Short-Description: Start aura_comms_transmit at boot time\n\
-# Description:       Enable aura_comms_transmit provided by daemon.\n\
+# Short-Description: Start foo-transmit at boot time\n\
+# Description:       Enable foo-transmit provided by daemon.\n\
 ### END INIT INFO\n\
 \n\
 case \"\$1\" in\n\
@@ -46,15 +46,15 @@ case \"\$1\" in\n\
     \$0 start\n\
     ;;\n\
   *)\n\
-    echo \"Usage: /etc/init.d/aura_comms_transmit {start|stop|restart}\"\n\
+    echo \"Usage: /etc/init.d/foo-transmit {start|stop|restart}\"\n\
     exit 1\n\
     ;;\n\
 esac\n\
 \n\
-exit 0\n" > /etc/init.d/aura_comms_transmit
+exit 0\n" > /etc/init.d/foo-transmit
 
 # Make the init script executable
-RUN chmod +x /etc/init.d/aura_comms_transmit
+RUN chmod +x /etc/init.d/foo-transmit
 
 EXPOSE 22
 RUN cd /etc/ssh && ssh-keygen -A
