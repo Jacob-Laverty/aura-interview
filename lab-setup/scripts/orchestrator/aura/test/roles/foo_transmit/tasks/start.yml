@@ -1,8 +1,10 @@
 # ------------------------------------------------------------------------------
-# stop.yml
+# start.yml
 #
-# Stop the foo-transmit service.
+# Start the foo-transmit service.
 # ------------------------------------------------------------------------------
 ---
-# Code redacted, assume there are no variables required to use this task. Simply
 # call the task without any variables.
+- name: Start Service
+  ansible.builtin.command:
+    cmd: service foo-transmit start

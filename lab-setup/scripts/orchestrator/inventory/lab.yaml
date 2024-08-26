@@ -1,0 +1,26 @@
+---
+all:
+  hosts:
+    recv_1:
+      ansible_host: 10.250.5.2
+      ansible_user: 'ansible'
+      ansible_ssh_pass: 'badusrpass'
+      ansible_become_user: 'root'
+      ansible_become_method: sudo
+      ansible_remote_tmp: /tmp
+
+    recv_2:
+      ansible_host: 10.250.6.2
+      ansible_user: 'ansible'
+      ansible_ssh_pass: 'badusrpass'
+      ansible_become_user: 'root'
+      ansible_become_method: sudo
+      ansible_remote_tmp: /tmp
+
+    trmt_1:
+      ansible_host: 10.250.7.2
+      ansible_user: 'ansible'
+      ansible_ssh_pass: 'badusrpass'
+      ansible_become_user: 'root'
+      ansible_become_method: sudo
+      ansible_remote_tmp: /tmp

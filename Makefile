@@ -7,12 +7,16 @@ sample: install
 test-case-1: install
 	ansible-playbook playbooks/test-case-1.yml
 
-.PHONY: build-lab-network build-lab start-lab stop-lab
+.PHONY: gen-aura-lab-keys build-lab-network build-lab start-lab stop-lab
 
-build-lab-network:
-	docker network create --subnet 10.250.0.0/20 aura_comms 
+gen-aura-lab-keys:
+ifeq (,$(wildcard ./lab-setup/ansible_id_rsa))
+	ssh-keygen -b 2048 -t rsa -C "ansible@email.com" -f "./lab-setup/ansible_id_rsa" -N ""
+	chmod 600 "./lab-setup/ansible_id_rsa"
+	chmod 644 "./lab-setup/ansible_id_rsa.pub"
+endif
 
-build-lab:
+build-lab: gen-aura-lab-keys
 	docker-compose -f docker-compose.yml build
 
 start-lab: build-lab
@@ -21,3 +25,4 @@ start-lab: build-lab
 stop-lab:
 	@docker ps -q --filter "name=aura-lab" | xargs -r docker kill
 	@docker ps -a -q --filter "name=aura-lab" | xargs -r docker rm
+	@docker network rm aura-lab_aura_comms

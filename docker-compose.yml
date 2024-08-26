@@ -8,14 +8,23 @@ networks:
     ipam:
       config:
         - subnet: 10.250.0.0/20
-          # gateway: 10.250.7.1
+          gateway: 10.250.0.1
 
 services:
+  orchestrator:
+    container_name: aura-lab-orchestrator
+    build:
+      context: ./lab-setup
+      dockerfile: ./docker/orchestrator/Dockerfile
+    restart: always
+    networks:
+      aura_comms:
+        ipv4_address: 10.250.4.2
   receiver-1:
     container_name: aura-lab-receiver-1
     build:
-      context: ./containers/receive
-      dockerfile: ./Dockerfile
+      context: ./lab-setup
+      dockerfile: ./docker/receive/Dockerfile
     restart: always
     ports:
       # Expose 22 for ansible
@@ -28,8 +37,8 @@ services:
   receiver-2:
     container_name: aura-lab-receiver-2
     build:
-      context: ./containers/receive
-      dockerfile: ./Dockerfile
+      context: ./lab-setup
+      dockerfile: ./docker/receive/Dockerfile
     restart: always
     ports:
       # Expose 22 for ansible
@@ -42,8 +51,8 @@ services:
   transmit:
     container_name: aura-lab-transmit
     build:
-      context: ./containers/transmit
-      dockerfile: ./Dockerfile
+      context: ./lab-setup
+      dockerfile: ./docker/transmit/Dockerfile
     restart: always
     ports:
       # Expose 22 for ansible

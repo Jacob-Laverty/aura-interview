@@ -1,6 +1,20 @@
-FROM 2000cubits/raspbian-python:latest as base
+FROM satmandu/raspios:latest as base
 
-COPY ./transmit.py /usr/local/bin
+COPY ./scripts/transmit.py /usr/local/bin
+
+RUN useradd -m ansible
+RUN echo ansible:badusrpass | chpasswd
+
+RUN echo "ansible ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+
+USER ansible
+RUN mkdir ~/.ssh
+RUN chmod -R 700 ~/.ssh
+COPY --chown=ansible:sudo ./ansible_id_rsa.pub /home/ansible/.ssh/id_rsa.pub
+RUN cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+RUN chmod 644 ~/.ssh/id_rsa.pub
+RUN chmod 644 ~/.ssh/authorized_keys
+USER root
 
 # Ensure the script is executable
 RUN chmod +x /usr/local/bin/transmit.py
@@ -42,5 +56,7 @@ exit 0\n" > /etc/init.d/aura_comms_transmit
 # Make the init script executable
 RUN chmod +x /etc/init.d/aura_comms_transmit
 
-# Start the service when the container starts
-CMD service aura_comms_transmit start && tail -f /dev/null
+EXPOSE 22
+RUN cd /etc/ssh && ssh-keygen -A
+
+CMD service ssh start && tail -f /dev/null

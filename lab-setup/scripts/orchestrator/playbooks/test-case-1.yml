@@ -14,8 +14,11 @@
 # as a part of your interview).
 # ------------------------------------------------------------------------------
 ---
-# TODO: Implement the test case
-- name: Hello World
-  hosts: localhost
+- name: Test Playbook
+  hosts: all
   tasks:
-    - debug: msg="Hello World"
+    - name: My message
+      debug: msg="Myhost is {{ ansible_ssh_host }}"
+
+    - name: My inventory host
+      debug: msg="My inventory host is {{ inventory_hostname }}"
