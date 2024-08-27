@@ -22,6 +22,6 @@
 #     state: absent
 
 - name: Start Service
-  ansible.builtin.service:
-    name: foo-receive
-    state: started
+  shell: '/usr/sbin/service foo-receive start'
+  args:
+    executable: /usr/bin/bash

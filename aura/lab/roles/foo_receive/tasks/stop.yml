@@ -8,6 +8,6 @@
 - ansible.builtin.debug:
     msg: '"Stopping foo-receive service"'
 - name: Start Service
-  ansible.builtin.service:
-    name: foo-receive
-    state: stopped
+  shell: '/usr/sbin/service foo-receive stop'
+  args:
+    executable: /usr/bin/bash

@@ -14,20 +14,31 @@
 # as a part of your interview).
 # ------------------------------------------------------------------------------
 ---
-- name: Test Playbook
-  hosts: all
+# TODO: Implement the test case
+- name: Aura interview Lab Debug
+  hosts: localhost
   collections:
     - 'aura.test'
   tasks:
-    - name: Start Receivers
+    - name: Start Lab
       include_role:
-        name: 'foo_receive'
+        name: 'orchestrator'
         tasks_from: start.yml
-      when: "'recv' in inventory_hostname"
-      vars:
-        log_dir: '/tmp'
-    - name: Start Transmit
-      include_role:
-        name: 'foo_transmit'
-        tasks_from: start.yml
-      when: "'trmt' in inventory_hostname"
+
+    - name: Wait for transmit
+      ansible.builtin.wait_for:
+        path: ./lab-setup/lab/trmt_1/transmit.lock
+        state: present
+
+    - name: Transmit start
+      ansible.builtin.debug:
+        msg: 'Transmitting...'
+
+    - name: Wait for transmit
+      ansible.builtin.wait_for:
+        path: ./lab-setup/lab/trmt_1/transmit.lock
+        state: absent
+
+    - name: Transmit complete
+      ansible.builtin.debug:
+        msg: 'Transmitting complete'

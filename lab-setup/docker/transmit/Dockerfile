@@ -7,6 +7,8 @@ RUN echo ansible:badusrpass | chpasswd
 
 RUN echo "ansible ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
 
+RUN mkdir /lab
+
 USER ansible
 RUN mkdir ~/.ssh
 RUN chmod -R 700 ~/.ssh

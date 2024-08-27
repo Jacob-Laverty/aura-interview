@@ -1,0 +1,51 @@
+# ------------------------------------------------------------------------------
+# This file contains one possible part of the technical interview.
+#
+# The purpose of this test case is to launch the foo-receive and foo-transmit
+# services on the appropriate nodes, wait for execution to complete, stop the
+# services, gather results of the test, and finally, parse the results of the
+# test to determine if the run was successful or not.
+#
+# Your goal in this portion of the technical interview is to utilize the
+# provided ansible collection "aura.test" to add tasks to this playbook,
+# accomplishing the goals outlined above. For the sake of this task, assume
+# that all other dependent functions are available and work as expected
+# (even if you were not asked to implement some of the other roles / plugs
+# as a part of your interview).
+# ------------------------------------------------------------------------------
+---
+- name: Test Playbook
+  hosts: all
+  collections:
+    - 'aura.lab'
+  tasks:
+    - name: Start Receivers
+      include_role:
+        name: 'foo_receive'
+        tasks_from: start.yml
+      when: "'recv' in inventory_hostname"
+      vars:
+        log_dir: '/lab'
+
+    - name: Start Transmit
+      include_role:
+        name: 'foo_transmit'
+        tasks_from: start.yml
+      when: "'trmt' in inventory_hostname"
+
+    - name: Wait for transmit
+      ansible.builtin.wait_for:
+        path: /lab/transmit.lock
+        state: absent
+
+    - name: Stop Transmit
+      include_role:
+        name: 'foo_transmit'
+        tasks_from: stop.yml
+      when: "'trmt' in inventory_hostname"
+
+    - name: Stop Receivers
+      include_role:
+        name: 'foo_receive'
+        tasks_from: stop.yml
+      when: "'recv' in inventory_hostname"

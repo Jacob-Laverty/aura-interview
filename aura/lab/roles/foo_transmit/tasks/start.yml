@@ -6,6 +6,6 @@
 ---
 # call the task without any variables.
 - name: Start Service
-  ansible.builtin.service:
-    name: foo-transmit
-    state: started
+  shell: '/usr/sbin/service foo-transmit start'
+  args:
+    executable: /usr/bin/bash

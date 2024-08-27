@@ -1,13 +1,4 @@
-install:
-	ansible-galaxy install -r requirements.yml --force
-
-sample: install
-	ansible-playbook playbooks/sample-test-case.yml
-
-test-case-1: install
-	ansible-playbook playbooks/test-case-1.yml
-
-.PHONY: gen-aura-lab-keys build-lab-network build-lab start-lab stop-lab
+.PHONY: gen-aura-lab-keys build-lab-network build-lab start-lab stop-lab test-case-1
 
 gen-aura-lab-keys:
 ifeq (,$(wildcard ./lab-setup/ansible_id_rsa))
@@ -26,3 +17,9 @@ stop-lab:
 	@docker ps -q --filter "name=aura-lab" | xargs -r docker kill
 	@docker ps -a -q --filter "name=aura-lab" | xargs -r docker rm
 	@docker network rm aura-lab_aura_comms
+
+install:
+	ansible-galaxy install -r requirements.yml --force
+
+test-case-1: start-lab install
+		ansible-playbook playbooks/test-case-1.yml

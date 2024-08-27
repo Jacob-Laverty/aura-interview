@@ -5,6 +5,6 @@
 # ------------------------------------------------------------------------------
 ---
 - name: Start Service
-  ansible.builtin.service:
-    name: foo-transmit
-    state: stopped
+  shell: '/usr/sbin/service foo-transmit start'
+  args:
+    executable: /usr/bin/bash

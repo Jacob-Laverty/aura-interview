@@ -14,12 +14,13 @@ services:
   orchestrator:
     container_name: aura-lab-orchestrator
     build:
-      context: ./lab-setup
-      dockerfile: ./docker/orchestrator/Dockerfile
+      context: .
+      dockerfile: ./lab-setup/docker/orchestrator/Dockerfile
     restart: always
     networks:
       aura_comms:
         ipv4_address: 10.250.4.2
+
   receiver-1:
     container_name: aura-lab-receiver-1
     build:
@@ -34,6 +35,9 @@ services:
     networks:
       aura_comms:
         ipv4_address: 10.250.5.2
+    volumes:
+      - ./lab-setup/lab/recv_1/:/lab
+
   receiver-2:
     container_name: aura-lab-receiver-2
     build:
@@ -48,6 +52,9 @@ services:
     networks:
       aura_comms:
         ipv4_address: 10.250.6.2
+    volumes:
+      - ./lab-setup/lab/recv_2/:/lab
+
   transmit:
     container_name: aura-lab-transmit
     build:
@@ -62,3 +69,5 @@ services:
     networks:
       aura_comms:
         ipv4_address: 10.250.7.2
+    volumes:
+      - ./lab-setup/lab/trmt_1/:/lab

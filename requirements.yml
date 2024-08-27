@@ -1,4 +1,4 @@
 ---
 collections:
-  - name: ./aura/lab
+  - name: ./aura/test
     type: dir

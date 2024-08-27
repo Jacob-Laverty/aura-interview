@@ -6,17 +6,20 @@ RUN apt-get update && \
     sshpass \
     openssh-client \
     telnet \
-    iputils-ping
+    iputils-ping \
+    make
 
 RUN pip install --no-cache-dir ansible
 
-COPY ./ansible_id_rsa /home/root/.ssh/id_rsa
+COPY ./lab-setup/ansible_id_rsa /home/root/.ssh/id_rsa
 RUN chmod 600 /home/root/.ssh/id_rsa
 
 RUN mkdir -p /ansible
+RUN mkdir -p /ansible/aura
 
 # Copy Ansible playbooks and inventory files into the container
-COPY ./scripts/orchestrator /ansible
+COPY ./aura /ansible/aura
+COPY ./lab-setup/scripts/orchestrator /ansible
 
 ENV ANSIBLE_HOST_KEY_CHECKING=False
 
